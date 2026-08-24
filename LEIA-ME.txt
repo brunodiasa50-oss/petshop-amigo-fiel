@@ -1,0 +1,63 @@
+PETSHOP AMIGO FIEL - Etapa 4
+==============================
+
+Passo 1 - Criar o banco de dados
+-----------------------------------
+Antes de rodar o sistema, crie o banco de dados no MySQL:
+
+1. Abra o MySQL Workbench (ou o cliente de linha de comando do MySQL).
+2. Abra o arquivo "sql/schema_petshop.sql" (incluido nesta pasta).
+3. Execute o script inteiro.
+
+O script cria:
+  - o banco "db_petshop"
+  - as tabelas cliente, animal e agendamento (com chaves estrangeiras
+    e exclusao em cascata: excluir um cliente remove seus animais, e
+    excluir um animal remove seus agendamentos)
+  - o usuario "petshop" (senha "petshop123"), que e o usuario que a
+    aplicacao Java usa para se conectar
+  - alguns dados de exemplo para teste
+
+Caso prefira usar outro usuario (ex.: root), ajuste as constantes
+USUARIO e SENHA em src/petshop/util/ConexaoBD.java.
+
+Passo 2 - Abrir no NetBeans
+-----------------------------
+1. Abra o NetBeans.
+2. File > Open Project.
+3. Selecione a pasta "PetshopEtapa4" (a pasta que contem o build.xml).
+4. Clique com o botao direito no projeto > Clean and Build.
+5. Clique com o botao direito no projeto > Run.
+
+A biblioteca do driver JDBC (MySQL Connector/J) ja esta incluida na
+pasta lib/ deste projeto e ja configurada no classpath (nao e
+necessario adicionar nenhuma biblioteca manualmente no NetBeans).
+
+Novidade desta etapa
+----------------------
+O sistema agora persiste os dados de verdade no banco MySQL, em vez
+de mante-los em memoria (como nas etapas anteriores):
+
+  petshop.util.ConexaoBD      -> abre/fecha a conexao com o MySQL
+  petshop.dao.ClienteDAO       -> operacoes de banco da tabela cliente
+  petshop.dao.AnimalDAO        -> operacoes de banco da tabela animal
+  petshop.dao.AgendamentoDAO   -> operacoes de banco da tabela agendamento
+  petshop.repositorio.RepositorioDados
+        -> ponto unico usado pelas telas; a partir desta etapa,
+           delega todas as operacoes aos DAOs acima (nao ha mais
+           nenhum dado "provisorio" em memoria)
+
+As telas (pacote petshop.ui) nao precisaram ser redesenhadas -
+continuam identicas ao wireframe da Etapa 2 - mas passaram a tratar
+possiveis falhas de conexao com o banco (SQLException), exibindo uma
+mensagem de erro compreensivel ao usuario em vez de travar a
+aplicacao.
+
+Se o MySQL nao estiver rodando (ou o banco nao tiver sido criado), o
+sistema abre normalmente e mostra uma mensagem de erro clara ao
+tentar carregar ou salvar dados, em vez de travar ou fechar sozinho.
+
+Este projeto foi testado antes do envio com um banco MySQL real:
+cadastro, edicao e exclusao (incluindo exclusao em cascata de
+clientes com animais e agendamentos vinculados) foram executados pela
+interface grafica e conferidos diretamente no banco de dados.

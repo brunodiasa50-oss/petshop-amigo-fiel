@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Este arquivo é gerenciado automaticamente pelo NetBeans. -->
+<project name="PetshopAmigoFiel" default="default" basedir=".">
+    <description>Builds, tests, and runs the project PetshopAmigoFiel.</description>
+    <import file="nbproject/build-impl.xml"/>
+</project>
